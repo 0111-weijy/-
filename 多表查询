@@ -1,0 +1,127 @@
+select student.sno,sname,ssex,sage,sedept,cno,grade
+from student,sc
+where student.sno=sc.sno 
+select student.sno,sname,ssex,sage,sdept,cno,grade
+from student join sc on student.sno=sc.sno
+
+select student.sno,sname
+from student a join sc b on a.sno=b.sno
+where sc.cno='2' and sc.grade>=90
+select sno,sname
+from student
+where sno in (select sno
+              from sc 
+              where cno='2' and grade>=90
+)
+
+select a.cno,b.cpno
+from c a join c b on a.cpno=b.cno
+
+select student.sno,sanme,cname,grade
+from student join sc on student.sno=sc.sno join c on sc.cno=c.cno
+
+select sno,sname,sdept
+from student
+where sname<>"刘晨" and sdept =(select sdept
+                                from student
+                                where sname="刘晨"
+)
+
+select sno,sname
+from student
+where sno in(select sno 
+             from sc
+             where cno in (select cno
+                           from c
+                           where cname="信息系统"
+             )
+)
+
+select sname,sage
+from student
+where sage<any (select sage 
+                from student 
+                where sdept='cs')
+and sdept<>'cs'
+select sanme,sno
+from student
+where sage <(select max(sage)
+             from student 
+             where sdept='cs'
+)
+
+select sname 
+from student
+where sno in(select sno
+             from sc
+             where cno='1'
+)
+select sname
+from student
+where exists(select *
+             from sc
+             where sno=student.sno and cno='1'
+)
+select sname
+from student
+where not exists(select *
+                 from sc
+                 where sno=student.sno and cno='1'
+)
+
+select sname 
+from student
+where not exists(select *
+                 from c
+                 where not exists(select *
+                                  from sc
+                                  where sno=student.sno and cno=c.cno
+                 )
+)
+
+select sno
+from sc x
+where not exists(select *
+                 from sc y
+                 where sno='201215122' and not exists(select *
+                                  from sc z
+                                  where z.sno=a.sno and z.cno=b.cno and sno
+                 )
+)
+
+select sname
+from student
+where sdept='cs'
+union
+select sname
+from student
+where sage<=19
+
+select sanme
+from student
+where sdept='cs'
+intersect 
+select
+sname
+from student
+where sage<=19
+
+select sanme
+from student
+where sdept='cs'
+except
+select sanme
+from student
+where sage<=19
+
+
+
+
+
+
+
+
+
+
+
+
