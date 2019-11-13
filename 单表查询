@@ -60,3 +60,34 @@ select sno,sname,ssex
 from student
 像“刘%'
 
+select sno,cno
+from sc
+where grade is not null
+select sname
+from student
+where sdept='cs' and sage<20
+select sno,grade
+from sc 
+where cno='3'
+order by grade desc
+select count(*)
+from student
+select count(distinct sno)
+from sc
+select avg(grade)
+from sc
+where cno='1'
+select max(grade)
+from sc
+where cno='1'
+select cno,count(sno)
+from sc
+group by cno
+select sno
+from sc
+group by sno
+having count(*)>3
+select sno
+from sc
+group by sno
+having avg(grade)>=90
