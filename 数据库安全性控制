@@ -1,0 +1,45 @@
+grant select
+on table student
+to u1
+grant all privileges
+on table student,c
+to u2,u3
+grant select
+on table student
+to public
+grant update(sno),select
+on table student
+to u4
+grant insert
+on table sc
+to u5
+with grant option
+grant insert
+on table sc
+to u6
+with grant option
+
+revoke update(sno)
+on table student
+from u4
+revoke insert
+on table sc
+from public
+revoke insert
+on table sc 
+from u5 cascade
+
+create role r1
+grant select,update,insert
+on table student
+to r1
+grant delete
+on table student
+to r1
+create view cs_student 
+as select *
+from student
+with sdept='cs'
+grant select
+on cs_student
+to 王平
