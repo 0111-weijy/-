@@ -1,0 +1,41 @@
+insert
+into student
+values('201215128','陈东','男','is',18)
+insert 
+into sc(sno,cno)
+values('201215128','1')
+insert 
+into sc
+values('201215128','1',null)
+insert 
+into s1(sdept,avg_age)
+select sdept,avg(sage)
+from student
+group by sdept
+
+update student
+set sage=22
+where sno='201215128'
+update student
+set sage=sage+1
+update student
+set sage=sage*1.1
+where sdept='is'
+update student
+set grade=0
+where sno in(select sno
+             from student
+             where sdept='is'
+)
+
+delete
+from student
+where sno='201215128'
+delete
+from sc
+delete
+from sc
+where sno in (select sno 
+              from student
+              where sdept='is'
+)
