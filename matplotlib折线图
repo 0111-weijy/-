@@ -1,0 +1,48 @@
+import numpy as np
+import matplotlib.pyplot as plt
+plt.rcparams['font.sans-serif']='simhei'
+plt.rcparams['axes.unicode_minus']=false
+plt.figure(figsize=(8,7))
+data=np.load('f/byrj/pycharm/data/国民经济核算季度数据.npz')
+name=data['columns']
+values=data['values']
+plt.plot(values[:,0],values[:,2],color='r',linestyle='--')
+plt.xlabel('年份')
+plt.ylabel('生产总值（亿元）')
+plt.ylim(0,225000)
+plt.xticks(range(0,70,4),values[range(0,70,4),1],rotation=45)
+plt.title('2000-2017各季度国民生产总值折线图.png')
+plt.savefig('f/byrj/pycharm/wwjy')
+plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+plt.rcparams['font.sans-serif']='simhei'
+plt.params['axes.unicode_minus']=false
+p=plt.figure(figsize(8,7))
+data=np.load('f/byrj/pycharm/data/国民经济核算季度数据.npz')
+name=data['columns']
+values=data['values']
+ax1=p.add_subplot(2,1,1)
+plt.plot(values[:,0],values[:,3],'b-',
+         values[:,0],values[:,4],'r-',
+         values[:,0],values[:,5],'g--')
+plt.ylabel('生产总值（亿元）')
+plt.title('2000-2017年各产业与行业各季度国民生产总值折线图')
+plt.legend(['第一产业','第二产业','第三产业'])
+ax2=p.add_subplot(2,1,2)
+plt.plot(values[:,0],values[:,6],'r-',
+         values[:,0],values[:,7],'b-',
+         values[:,0],values[:,8],'y-',
+         values[:,0],values[:,9],'g-',
+         values[:,0],values[:,10],'c-',
+         values[:,0],values[:,11],'m-',
+         values[:,0],values[:,12],'k-',
+         values[:,0],values[:,13],'r--',
+         values[:,0],vlaues[:,14],'b--')
+plt.legend(['农业','工业','建筑','批发','交通','餐饮','金融','房地产','其他'])
+plt.xlabel('年份')
+plt.ylabel('生产总值（亿元）')
+plt.xticks(range(0,70,4),values[range(0,70,4),1],rotation=45)
+plt.savefig('f/byrj/pycharm/wwjy/2000-2017年各行业与产业各季度国民生产总值折线图。png')
+plt.show()
