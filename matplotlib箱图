@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+data=np.load('f/byrj/pycharm/data/国民经济核算季度数据.npz')
+name=data['columns']
+values=['values']
+plt.rcparams['font.sans-serif']='simhei'
+plt.rcparams['axes.unicode_minus']=false
+label=['第一产业','第二产业','第三产业']
+gdp=(list(values[:,3]),list(values[:,4]),list(values[:,5]))
+plt.figure(figsize(6,4))
+plt.boxplot(gdp,notch=true,labels=label,meanline=true)
+plt.title('2000-2017年各产业国民生产总值箱线图')
+plt.savefig('f/byrj/pycharm/wwjy/2000-2017年各产业国民生产总值箱线图')
+plt.show()
+
+import numpy as np
+import matplotlib.pyplot as plt
+data=np.load('f/byrj/pycharm/data/国民经济核算季度数据.npz')
+name=data['columns']
+values=data['values']
+plt.rcparams['font.sans-serif']='simhei'
+plt.rcparams['axes.unicode_minus']=false
+label1=['第一产业','第二产业','第三产业']
+label2=['农业','工业,'建筑','批发','交通','餐饮','金融','房地产','其他']
+gdp1=(list(values[:,3]),list(values[:,4]),list(values[:,5]))
+gdp2=([list(values[:,i]) for i in range(6,15)])
+p=plt.figure(figsize(6,8))
+ax1=p.add_subplot(2,1,1)
+plt.boxplot(gdp1,notch=true,labels=label1,meanline=true)
+plt.title('2000-2017年各产业国民经济生产总值箱线图')
+plt.xlabel('产业')
+plt.ylabel=('生产总值（亿元）')
+ax2=p.add_subplot(2,1,2)
+plt.boxplot(gdp2,notch=true,labels=label2,meanline=true)
+plt.title('2000-2017年各行业国民经济生产总值箱线图')
+plt.xlabel('行业')
+plt.ylabel('生产总值（亿元）')
+plt.savefig('f/byrj/pycharm/wwjy/箱线图')
+plt.show()
