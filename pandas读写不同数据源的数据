@@ -1,0 +1,49 @@
+from sqlalchemy import create_engine
+engine=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset=utf8')
+print(engine)
+
+import pandas as pd
+formlist=pd.read_sql_query('show tables',con=engine)
+print(formlist)
+detail1=pd.read_sql_table('meal_order_detail1'，con=engine)
+print(len(detail1))
+detail2=pd.read_sql('select * from meal_order_detail2',con=engine)
+print(len(detail2))
+detail3=pd.read_sql('meal_order_detail3',con=engine)
+print(len(detail3))
+
+detail1.to_sql('test1',con=engine,index=false,if_exists='replace')
+formlist=pd.read_sql_query('show tables',con=engine)
+print(formlist)
+
+order=pd.read_table('f/byrj/pycharm/data/meal_order_info.csv',sep=',',encoding='gbk')
+print(len(order))
+order1=pd.read_csv('f/byrj/pycharm/data/meal_order_info.csv',encoding='gbk')
+print(len(order1)
+order2=pd.read_table('f/byrj/pycharm/data/meal_order_info.csv',sep=',',header=none,encoding='gbk')
+print(order3)
+order4=pd.read_csv('f/byrj/pycharm/data/meal_oreder_info.csv',sep=',',encoding='utf-8')  #报错，不能用utf-8
+
+import os print(os.listdir('f/byrj/pycharm/data'))
+order.to.csv('f/byrj/pycharm/data/orderinfo.csv',sep=';',index=false)
+print(os.listdir)
+
+user=pd.read_excel('.../data/user.xlsx')
+print(len(user))
+print(os.listdir('...'))
+user.to_excel('.../userinfo.xlsx')
+print(os.listdir('...'))
+
+from sqlalchemy import create_engine
+import pandas asapd
+engine=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset='utf-8')
+order1=pd.read_sql_table('meal_order_detail1',con=engine)
+print(len(order1))
+order2=pd.read_sql_table('meal_order_detail2',con=engine)
+print(len(order2))
+order3=pd.read_sql_table('meal_detail3',con=engine)
+print(len(order3))
+orderinfo=pd.read_table('.../data/meal_order_info.csv',sep=',',encoding='utf-8')
+print(len(orderinfo))
+userinfo=pd.read_excel('.../data/uders.xlsx',sheetname='users1')
+print(len(userinfo))
