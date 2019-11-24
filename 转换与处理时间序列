@@ -1,0 +1,37 @@
+import pandas as pd
+order=pd.read_table('.../data/meal_order_info.csv',sep=',',encoding='gbk')
+print(order['lock_time'].dtypes)
+order['lock_time']=pd.to_datetime(order['lock_time'])
+print(order['lock_time'].dtypes)
+print(pd.timestamp.min)
+print(pd.timestamp.max)
+dateindex=pd.periodindex(order['lock_time'],frep='s')
+print(type(periodindex))
+
+year1=[i.year for i in order['lock_time']]
+print(year1[:5])
+month1=[i.month for i in order['lock_time']]
+print(month1[:5])
+day1=[i.day for i in order['lock_time']]
+print(day1[:5])
+weekday1=[i.weekday for i in order['lock_time']]
+print(weekday1[:5])
+
+print(dateindex.weekday_name [:5])
+print(periodindex.weekday [:5])
+#加减时间数据
+time1=order['lock_time']+pd.timedelta(days=1)
+print(order['lock_time'][:5])
+print(time1[:5])
+timedelta=order['lock_time']-pd.to_datetime('2017-1-1')
+print(timedelta[:5])
+print(timedelta.dtypes)
+timemin=order['lock_time'].min()
+timemax=order['lock_time'].max()
+print(timemin)
+print(timemax)
+print(timemax-timemin)
+chektime=order['lock_time']
+print(chektime.mean())
+print(chektime.min())
+print(chektime.max())
