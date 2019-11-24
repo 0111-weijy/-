@@ -1,0 +1,50 @@
+from sqlalchemy import create_engine
+import pandas as pd
+engine=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset=utf8')
+#增
+detail['payment']=detail['counts']*detail['amounts']
+print(detail['payments'].head())
+detail['pay_way']='现金支付'
+print(detail['pay_way'].head())
+#删
+print(detail.columns)
+detail.drop(labels='pay_way',axis=1,inplace=True)
+print(detail.colums)
+print(len(detail))
+detail.drop(labels=range(1,11),axis=0,inplace=True)
+print(len(detail))
+#改
+detail.loc[detail['order_id']=='458','order_id']='45800'
+print(detail.loc[detail['order_id']=='458','order_id'])
+print(detail.loc[detail['order_id']=='45800','order_id'])
+#查
+import numpy as np
+print(np.mean(detail['amounts']))
+print(detail['amounts'].mean())
+print(detail[['counts','amounts']].describ())
+print(detail['dishes_name'].value_counts()[0:10])
+
+detail['dishes_name']=detail['dishes_name'].astype('category')
+print(detail['dishes_name'].detypes)
+print(detail['dishes_name'].describe())
+
+from sqlalchemy import create_engine
+import pandas as pd
+emgime=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset=utf8')
+detail=pd.read_sql_table('meal_order_detail1',con=engine)
+order=pd.read_table('.../data/meal_order_info.csv',sep=',',encoding='gbk')
+user=pd.read_excel('../data/users.xlsx')
+print(detail.ndim)
+print(order.ndim)
+print(user.ndim)
+print(detail.shape)
+print(order.shape)
+print(user.shape)
+print(detail.size)
+print(order.size)
+print(user.size)
+
+print(detail.loc[:,['counts','amounts']].describe())
+detail['order_id']=detail['order_id'].astype('category')
+detail['dishes_name']=detail['dishes_name'].astype('category')
+print(detail[['order_id','dishes_name']].describe())
