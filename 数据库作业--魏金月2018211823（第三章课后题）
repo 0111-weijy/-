@@ -1,0 +1,31 @@
+alter table dbo.STu add jg char(10)
+alter table dbo.STu alter column jg char(20)
+alter table dbo.STu drop column jg
+
+select sno,sname,ssex,sage
+from dbo.STu
+where sdept in('计算机系','数学系')
+
+select sno,sname
+from dbo.STu
+where sname like '张%'
+
+select sno,sname,ssex,sage
+from dbo.STu
+where sdept in('计算机系','数学系') and ssex='女'
+order by sdept asc,sage desc
+
+select COUNT(*) as 男生人数
+from dbo.STu
+where ssex='男'
+select COUNT(*) as 女生人数
+from dbo.STu
+where ssex='女'
+
+select sdept, COUNT(*) as 人数
+from dbo.STu
+group by sdept
+
+select sname,avg(grade) as 平均分
+from Sc 
+group by cno
