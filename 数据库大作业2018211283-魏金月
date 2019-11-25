@@ -1,0 +1,239 @@
+--定义语句
+--(1)创建S、P、J表
+create table s(sno char(2) primary key,
+			  sname varchar(20) not null,
+			  status char(4),
+			  city char(10) 
+);
+
+create table p(pno char(2) primary key,
+			   pname varchar(20) not null,
+			   color char(4),
+			   weight int
+);
+
+create table j(jno char(2) primary key,
+			   name varchar(20) not null,
+			   city char(10)
+);
+
+--（2）创建SPJ表，并设置主键，外键
+create table spj(sno char(2),
+				 pno char(2),
+				 jno char(2),
+				 qty int,
+				 primary key(sno,pno,jno),
+				 foreign key(sno) references s(sno),
+				 foreign key(pno) references p(pno),
+				 foreign key(jno) references j(jno)
+);
+
+--（3）修改J表，添加一个字段leader char(10)
+alter table j add leader char(10)
+--(4)删除J表中的leader字段
+alter table j drop column leader 
+--(5)修改p表，添加一个约束，weight的取值在-100之间
+alter table p add check(weight>=0 and weight<=100)
+alter table p add check(weight between 0 and 100)
+--(6)对S表的CITY创建一个名为IDX_CITY的聚集索引
+create clustered index IDX_CITY on s(city)
+--(7)删除IDX_CITY索引
+drop index IDX_CITY on s
+--(8)创建一个视图V1,能找出SPJ表中每个供应商的供应数量总和
+create view V1
+as
+select sno,sum(qty) as "总和"
+from spj
+group by SNO 
+--(9)创建一个视图V2,能找出给J1项目供货的供应商名，零件名
+create view V2
+as
+select sname,pname
+from dbo.S join dbo.SPJ on dbo.S.SNO=dbo.SPJ.SNO join dbo.P on dbo.SPJ.PNO=dbo.P.PNO
+where JNO='J1'
+
+--查询语句
+--(1)查询北京供应商的SNO,SNAME(单表投影)
+select SNO,SNAME
+from dbo.S
+where CITY='北京'
+--(2)查询供应数量介于到的项目号(单表选择)
+select distinct JNO
+from dbo.SPJ
+where QTY in (200,300,400)
+select distinct JNO
+from SPJ
+where QTY>=200 and QTY<=400
+select distinct jno
+from dbo.SPJ
+where QTY between 200 and 400
+--(3)查询供应数量介于到的项目号，供应商号，并按照项目号的升序，供应商号的降序排序(单表排序)
+select JNO,SNO
+from dbo.SPJ
+where QTY in (200, 300,400)
+order by JNO asc,SNO desc
+select jno,sno
+from SPJ
+where QTY>=200 and QTY<=400
+order by JNO,SNO DESC
+select distinct jno,sno
+from dbo.SPJ
+where QTY between 200 and 400
+order by JNO,sno desc
+--(4)查询每个项目号的供应商个数，只保留个数大于的（单表分组）
+select JNO,count(distinct SNO) as GS
+from dbo.SPJ
+group by JNO
+having count(SNO)>5
+--(5)查询北京供应商的SNO,SNAME,JNO,QTY(两表)
+select dbo.S.SNO,SNAME,JNO,QTY
+from dbo.S join dbo.SPJ on dbo.S.SNO=dbo.SPJ.SNO
+where CITY='北京'
+--（6）查询北京供应商给北京项目的供应数量QTY(三表)
+select QTY
+from dbo.S join dbo.SPJ on dbo.S.SNO=dbo.SPJ.SNO join dbo.J on dbo.SPJ.JNO=dbo.J.JNO
+where dbo.S.CITY='北京' and dbo.J.CITY='北京'
+---（7）查询北京供应商提供的螺母的供应数量QTY(三表)
+select QTY
+from dbo.S join dbo.SPJ on dbo.S.SNO=dbo.SPJ.SNO join dbo.P on dbo.SPJ.PNO=dbo.P.PNO
+where CITY='北京' and PNAME='螺母'
+--（8）查询既是S1供应的，又使用了P1零件的项目号J1(既。。。又问题类型)
+select JNO
+from dbo.SPJ
+where SNO='S1' and PNO='P1'
+--(9)查询既使用了P1,又使用了P2的项目号J1(既。。。又问题类型)
+select JNO
+from dbo.SPJ
+where SNO='S1'
+intersect
+select JNO
+from dbo.SPJ
+where SNO='S2'
+select B.jno
+from spj A join spj B on A.JNO=B.JNO
+WHERE A.PNO='p1' and B.PNO='p2'
+select jno
+from SPJ
+where PNO='P1' and JNO in(
+select JNO
+from SPJ
+where PNO='P2')
+--(10)查询S1供应的，或者使用了P1零件的项目号J1(或者问题类型)
+select distinct JNO
+from dbo.SPJ
+where SNO='S1' or PNO='P1'
+select jno
+from spj
+where SNO='S1'
+UNION
+select jno
+from spj
+where PNO='P1'
+--(11)查询使用了P1,或使用了P2的项目号J1(或者问题类型)
+select distinct JNO
+from dbo.SPJ
+where PNO='P1'
+union
+select distinct JNO
+from dbo.SPJ
+where PNO='P2'
+--(12)查询和“东方红”同一城市的供应商名SNAME(自连接问题)
+select SNAME
+from dbo.S
+where CITY=(select CITY
+			from dbo.S
+			where SNAME='东方红'
+) and SNAME<>'东方红'
+--（13）查询没有使用螺丝刀的项目号（没有问题）
+select JNO
+from dbo.J
+except
+select JNO
+from dbo.P join dbo.SPJ on dbo.P.PNO=dbo.SPJ.PNO
+where PNAME='螺丝刀'
+SELECT JNO
+FROM J
+WHERE NOT EXISTS
+(SELECT *
+FROM SPJ,S,P
+WHERE SPJ.JNO=J.JNO
+AND SPJ.SNO=S.SNO
+AND SPJ.PNO=P.PNO
+AND PNAME='螺丝刀')
+--（14）查询S1没参与的项目号（没有问题）
+select JNO
+from dbo.SPJ
+except
+select JNO
+from dbo.SPJ
+where SNO='S1'
+SELECT JNO
+FROM J
+WHERE NOT EXISTS
+(SELECT *
+FROM SPJ
+WHERE SPJ.JNO=J.JNO 
+AND SNO='S1')
+---(15)查询全部供应商都参与的项目号（全部问题）
+select jno
+from j
+where not exists(
+select *
+from s
+where not exists(
+select *
+from SPJ
+where spj.SNO=s.SNO and j.jNO=SPJ.jNO)
+)
+---(16)查询全部供应商都参与的项目号和项目名（全部问题）
+select JNO,NAME
+from j
+where not exists(
+select *
+from s
+where not exists(
+select *
+from SPJ
+where spj.SNO=s.SNO and j.jNO=SPJ.jNO)
+)
+
+--插删改语句
+--(1)将SPJ表中插入一条新记录（S5,P5,J5,600）
+insert
+into dbo.SPJ
+values('S5','P5','J5',600)
+--(2)将SPJ表中的QTY增加100
+update dbo.SPJ
+set QTY=QTY+100
+--(3)将北京供应商的QTY增加%
+update dbo.SPJ
+set QTY=QTY*1.1
+where SNO in(select SNO
+			 from dbo.S
+			 where CITY='北京'
+)
+--(4)删除“为民”供应商的供应记录
+delete 
+from dbo.SPJ 
+where SNO in(select SNO
+			 from dbo.S
+			 where SNAME='为民'
+)
+---(5)删除“为民”供应商
+delete 
+from s
+where SNAME='为民'
+--授权语句
+--(1)给用户u1授予S表的查询权，插入权
+grant select,insert
+on table S
+to u1;
+--(2)给用户u1，u2授予S表的查询权，插入权，允许他授权给别人
+grant select
+on table S
+to u2,u3
+with grant option;
+--(3)收回用户U1对S表的插入权
+revoke insert
+on table S
+from u1;
