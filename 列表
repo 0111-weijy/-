@@ -1,0 +1,43 @@
+#定义
+list1=['physics','chememistry',1997,2000]；
+list2=[1,2,3,4,5];
+list3=["a","b","c","d"];
+#显示
+print(list1)
+print(list2)
+print(list3)
+print(list[0])
+print(list[0].title())
+print(list2[1])
+print(list3[2])
+print('i like',list1[0].title())
+names=['alice','bob','lily','lucy']
+print(names[0].title())
+print("hello,"names[0].title(),"how are you?")
+#修改
+list1[2]="art"
+list1[3]="chinese"
+print(list1)
+list1.append('math')
+print(list1)
+list1.insert(1,'english')
+del list1[2]
+x=list1.pop()
+print('popped str is ',x)
+y=list1.pop(0)
+print('poped str is ',y)
+list1.remove('chinese')
+#排序
+list1=['physics','english','chemistry','art','chinese']
+list1.sort()
+print(list1)
+print('sort by a-z:')
+list1.sort()
+print('sort by z-a:')
+list1.sort(reverse=True)
+print(sorted(list1))
+print(list)
+print(sorted(list1,reverse=True))
+list1.reverse()
+print(list1)
+print(len(list1))
