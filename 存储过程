@@ -1,0 +1,50 @@
+#例8－1 查询所有学生的个人情况，要求列出学号、姓名、性别
+create proc p_1
+as
+ select sno,sname,ssex
+ from STu
+exec p_1
+#例8－2 查询王平的个人情况，要求列出学号、姓名、性别
+create proc p_2
+as 
+ select sno,sname,ssex
+ from STu 
+ where sname='刘晨'
+ exec p_2
+#例8－3 查询男、女生的人数
+create proc p_3
+as
+ select ssex,COUNT(*) as num
+ from STu
+ group by ssex
+exec p_3 
+#例8－4 查询王平的c01课程的分数
+create proc p_4
+as 
+ select sname,grade
+ from STu join Sc on STu.sno=Sc.sno
+ where sname='李勇' and cno='c01'
+exec p_4
+#例8－5 查询王平的操作系统课程的分数
+create proc p_5
+as
+ select sname,cname,grade
+ from STu join Sc on STu.sno=Sc.sno join c on Sc.cno=c.cno
+ where sname='李勇' and cname='计算机文化学'
+exec p_5
+#例8－5 查询指定学号的个人信息
+create proc p_6
+@sno char(7)
+as 
+ select sname,ssex,sdept
+ from STu 
+ where sno=@sno
+exec p_6 '9512101'
+#例8－6 查询指定性别的人数
+create proc p_7
+@ssex char(2)
+as
+ select COUNT(*) as num
+ from STu
+ where ssex=@ssex
+exec p_7 '男'
