@@ -1,0 +1,77 @@
+#例1创建一个SCROLL游标，演示LAST,PRIOR,RELATIVE和ABSOLUTE选项的使用
+declare @sno char(7),@sname char(8),@ssex char(2)
+declare stu_scr_cursor scroll cursor
+for
+select sno,sname,ssex
+from stu
+print '学号：  '+'姓名：  '+'性别:'
+open stu_scr_cursor
+fetch first from stu_scr_cursor into @sno,@sname,@ssex
+print @sno+' '+@sname+' '+@ssex
+fetch last from stu_scr_cursor into @sno,@sname,@ssex
+print @sno+' '+@sname+' '+@ssex
+fetch relative -2 from stu_scr_cursor into @sno,@sname,@ssex
+print @sno+' '+@sname+' '+@ssex
+fetch absolute 4 from stu_scr_cursor into @sno,@sname,@ssex
+print @sno+' '+@sname+' '+@ssex
+close stu_scr_cursor
+deallocate stu_scr_cursor
+
+#例3定义一个查询学生信息的游标，使用FETCH NEXT逐个提取每行数据，并按下列形式输出
+declare @sno char(7),@sname char(10),@ssex char(2)
+declare stu_scr_cursor scroll cursor
+for 
+select sno,sname,ssex
+from stu
+print 'sno:     '+'sname:    '+'ssex:'
+print '------------------------------'
+open stu_scr_cursor
+fetch next from stu_scr_cursor into @sno,@sname,@ssex
+while @@FETCH_STATUS=0
+begin 
+print @sno+'  '+@sname+' '+@ssex
+print '------------------------------'
+fetch next from stu_scr_cursor into @sno,@sname,@ssex
+end
+close stu_scr_cursor 
+deallocate stu_scr_cursor
+
+#例4创建一个SCROLL游标，格式化显示每一条女学生记录
+declare @sno char(7),@sname char(10),@ssex char(2),@sage char(5)
+declare nv_cursor scroll cursor
+for
+select sno,sname,ssex,sage
+from stu
+where ssex='女'
+print 'sno:   '+'sname:   '+'ssex:    '+'sage:'
+print '---------------------------------------'
+open nv_cursor
+fetch next from nv_cursor into @sno,@sname,@ssex,@sage
+while @@FETCH_STATUS=0
+begin
+print @sno+' '+@sname+' '+@ssex+' '+@sage
+print '---------------------------------------'
+fetch next from nv_cursor into @sno,@sname,@ssex,@sage
+end
+close nv_cursor
+deallocate nv_cursor
+
+#例5创建一个SCROLL游标，格式化显示每一个学生的选课记录
+declare @sname char(10),@cname char(10),@grade char(5)
+declare xkjl_cursor scroll cursor
+for
+select sname,cname,grade
+from stu join sc on stu.sno=sc.sno join c on sc.cno=c.cno
+where grade>0 
+print '学生姓名:'+'   课程名：   '+'成绩： '
+print '-------------------------------'
+open xkjl_cursor
+fetch next from xkjl_cursor into @sname,@cname,@grade
+while @@FETCH_STATUS=0
+begin
+print @sname+'  '+@cname+'  '+@grade
+print '-------------------------------'
+fetch next from xkjl_cursor into @sname,@cname,@grade
+end
+close xkjl_cursor
+deallocate xkjl_cursor
