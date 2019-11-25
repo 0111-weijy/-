@@ -113,15 +113,3 @@ except
 select sanme
 from student
 where sage<=19
-
-
-
-
-
-
-
-
-
-
-
-
