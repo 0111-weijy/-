@@ -1,0 +1,43 @@
+＃定义
+list1 = ['物理学'，'化学'，1997,2000]；
+list2 = [1,2,3,4,5];
+list3 = [“ a”，“ b”，“ c”，“ d”];
+＃显示
+打印（list1）
+打印（list2）
+打印（list3）
+打印（list [0]）
+打印（list [0] .title（））
+打印（list2 [1]）
+打印（list3 [2]）
+打印（'i like'，list1 [0] .title（））
+names = ['alice'，'bob'，'lily'，'lucy']
+print（names [0] .title（））
+print（“ hello，” names [ 0] .title（），“你好吗？”）
+＃修改
+list1 [2] =“艺术”
+list1 [3] =“中文”
+print（list1）
+list1.append（'math'）
+print（list1）
+list1。插入（1，'
+
+
+
+y = list1.pop（0）
+print（'poped str is'，y）
+list1.remove（'chinese'）
+＃排序
+list1 = ['物理'，'英语'，'化学'，'艺术'，'中文' ]
+list1.sort（）
+打印（list1）
+打印（'按az排序：'）
+list1.sort（）
+打印（'按za排序：'）
+list1.sort（reverse = True）
+打印（sorted（list1））
+打印（ list）
+print（sorted（list1，reverse = True））
+list1.reverse（）
+print（list1）
+print（len（list1））
