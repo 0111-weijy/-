@@ -1,0 +1,98 @@
+#进行分组
+import numpy as np
+import pandas as pd
+from sqlalchemy import create_engine
+engine=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset=utf8')
+detail=pd.read_sql_table('meal_order_detail1',con=engine)
+detailgroup=detail[['order_id','counts','amounts']].groupby(by='order_id')
+print(detailgroup)
+#求均值、标准差、中位数
+print(detailgroup.mean().head())
+print(detailgroup.std().head())
+print(detailgroup.size().head())
+#使用agg方法聚合数据
+print(detail[['counts','amounts']].agg([np.sum,np.mean]))
+print(detail.agg({'counts':np.sum,'amounts':np.mean}))
+print(detail.agg({'counts':np.sum,'amounts':[np.sum,np.mean]}))
+
+def doublesum(data):
+  s=data.sum()*2
+  return s
+print(detail.agg({'counts':doublesum},axis=0))
+def doublesum(data):
+  s=np.sum(data)*2
+  return s
+print(detail.agg({'counts':doublesum},axis=0.head())
+print(detail[['counts','amounts']].agg(doublesum))
+
+print(detailgroup.agg(np.mean).head(3))
+print(detailgroup.agg(np.std).head(3))
+print(detailgroup.agg({'counts':np.sum,'ammounts':np.mean}.head(3))
+daymean=detailgroup.agg({'amounts':np.mean})
+print(daymean.head())
+daymean=detailgroup.agg({'amounts':np.median})
+print(daymean.head())
+
+print(detail[['counts','amounts']].apply(np.mean))
+print(detailgroup.apply(np.mean).head(3))
+print(detailgroup.apply(np.std).head(3))
+daysalesum=datailgroup.apply(np.sum)['counts']
+print(daysalesum.head())
+
+print(detail[['counts','amounts']].transform(lambda x:x*2).head(4))
+print(detailgroup.transform(lambda x:(x.mean()-x.min())-(x.max()-x.min()).head())
+
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine
+engine=create_engine('mysql+pymysql://root:1234@127.0.0.1:\3306/testdb?charset=utf8')
+detail=pd.read_sql_table('meal_order_detail1',con=engine)
+detail['place_order_time']=pd.to_datetime(detail['place_order_time'])
+detail['date']=[i.date() for i in detail['place_order_time']]
+detailgroup=detail[['date','counts','amounts']].groupby(by='date')
+print(detailgroup.size().head())
+
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine
+engine=create_engine('mysql+pymysql://root:1234@\127.0.0.1:3306/testdb?charset')
+detail=pd.read_sql_table('meal_order_detail1',con=engine)
+detailpivot=pd.pivot_table(detail[['order_id','counts','amounts']],index='order_id')
+print(detailpivot.head())
+detailpivot=pd.pivot_table(detail[['order_id','counts','amounts']],index='order_id',aggfunc=np.sum)
+print(detailpivote.head())
+
+detailpivot=pd.pivot_table(detail[['order_id','dishes_name',aggfunc=np.sum]])
+print(detailpilvot.head())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
