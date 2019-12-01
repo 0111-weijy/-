@@ -64,35 +64,26 @@ print(detailpivote.head())
 
 detailpivot=pd.pivot_table(detail[['order_id','dishes_name',aggfunc=np.sum]])
 print(detailpilvot.head())
+detailpivot3=pd.pivot_table(detail[['order_id','dishes_name','counts','amounts']],index='order_id',columns='dishes_name',aggfunc=np.sum)
+print(detailpivot3.iloc[:5,:4])
+detailpivot4=pd.pivot_table(detail[['order_id','dishes_name','counts','amounts']],index='order_id',value='counts',aggfunc=np.sum)
+print(detailpivot4.head())
+detailpivot5=pd.pivot_table(detail[['order_id','dishes_name','amounts','counts']],index='order_id',columns='dishes_name',aggfunc=np.sum,fill_value=0)
+print(detailpivot5.iloc[:4,:5])
+detailpivot6=pd.pivot_table(detail[['order_id','dishes_name','counts','amounts',index='order_id',columns='dishes_name',aggfunc=np.sum,fill_value=0,margin=True]])
+print(detailpivote6.iloc[:5,:4])
 
+detailcross=pd.crosstab(index=detail['order_id'],columns=detail['dishes_name'],values=detail['counts'],aggfunc=np.sum)
+print(detailcross.iloc[:5,:5])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+import pandas as pd
+import numpy as np
+from sqlalchemy import create_engine
+engine=create_engine('mysql_pymysql://root1234@\127.0.0.1:3306/testdb?charset=utf8')
+detail=pd.read_sql_table('meal_order_detail1',con=engine)
+detail['place_order_time']=pd.to_datetime(detail['place_order_time'])
+detail['date']=[i.date() for i in detail['place_order_time']]
+pivotdetail=pd.pivot_table(detail[['date','dishes_name','counts','amounts']],index='date',aggfunc=np.sum,margin=True)
+print(pivotdetail.head())
+crossdetail=pd.crosstab(index=detail['date'],columns=detail['dishes_name'],values=detail['amounts'],aggfunc=np.sum,margin=true)
+print(crossdetai.iloc[-5:,-5:])
